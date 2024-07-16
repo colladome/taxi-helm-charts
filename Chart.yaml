@@ -1,0 +1,4 @@
+apiVersion: v2
+name: Taxi-Helm
+description: A Helm chart for deploying taxi app
+version: 1.0.0

@@ -1,0 +1,51 @@
+{{- range .Values.apps }}
+{{- if .enabled }}
+{{- if .storage.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .app }}-storage-pvc
+  namespace: {{ .namespace }}
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .storage.size | default "50Gi" }}
+  storageClassName: {{ .storage.storageClassName | default "efs-sc" }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .app }}-images-pvc
+  namespace: {{ .namespace }}
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .images.size | default "50Gi" }}
+  storageClassName: {{ .images.storageClassName | default "efs-sc" }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .app }}-tripfile-pvc
+  namespace: {{ .namespace }}
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .tripfiles.size | default "50Gi" }}
+  storageClassName: {{ .tripfiles.storageClassName | default "efs-sc" }}
+{{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,89 @@
+{{- range .Values.apps }}
+{{- if .enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .app }}
+  name: {{ .app }}
+  namespace: {{ .namespace }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .replicas | default 1 }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{ .app }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .app }}
+    spec:
+      initContainers:
+      - name: init-permissions
+        image: busybox
+        command:
+          - sh
+          - -c
+          - |
+            ##mkdir -p /var/www/html/storage/framework/cache/data \
+            ##&& mkdir -p /var/www/html/storage/framework/sessions \
+            ##&& mkdir -p /var/www/html/storage/framework/views \
+            ##&& mkdir -p /var/www/html/storage/logs \
+            ##&& mkdir -p /var/www/html/public/images \
+            ##&& mkdir -p /var/www/html/public/trip_files \
+            ## && chmod -R 775 /var/www/html/storage \
+            ## && chmod -R 775 /var/www/html/public/images \
+            ## && chmod -R 775 /var/www/html/public/trip_file \
+            ##&& touch /var/www/html/storage/installed && echo "Laravel Installer successfully INSTALLED on 2021/12/18 01:35:25pm" > /var/www/html/storage/installed
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+        volumeMounts:
+        - name: storage
+          mountPath: /var/www/html/storage
+        - name: images
+          mountPath: /var/www/html/public/images
+        - name: trip-files
+          mountPath: /var/www/html/public/trip_file
+      containers:
+      - image: {{ .image }}
+        imagePullPolicy: Always
+        name: {{ .app }}
+        volumeMounts:
+        - name: storage
+          mountPath: /var/www/html/storage
+        - name: images
+          mountPath: /var/www/html/public/images
+        - name: trip-files
+          mountPath: /var/www/html/public/trip_file
+        resources:
+          limits:
+            cpu: {{ .limits.cpu }}
+            memory: {{ .limits.memory }}
+          requests:
+            cpu: {{ .requests.cpu }}
+            memory: {{ .requests.memory }}
+        {{- if .env }}
+        env:
+          {{- toYaml .env | nindent 10 }}
+        {{- end }}
+      restartPolicy: Always
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: {{ .app }}-storage-pvc
+      - name: images
+        persistentVolumeClaim:
+          claimName: {{ .app }}-images-pvc
+      - name: trip-files
+        persistentVolumeClaim:
+          claimName: {{ .app }}-tripfile-pvc
+{{- end }}
+{{- end }}

@@ -1,0 +1,21 @@
+{{- range .Values.apps }}
+{{- if .enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .app }}
+  name: {{ .app }}
+  namespace: {{ .namespace }}
+spec:
+  ports:
+  - port: {{ .port | default 80 }} 
+    protocol: TCP
+    targetPort: {{ .targetPort }}
+  selector:
+    app: {{ .app }}
+  sessionAffinity: None
+  type: ClusterIP
+{{- end }}
+{{- end }}

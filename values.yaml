@@ -1,0 +1,25 @@
+apps:
+  - namespace: taxi
+    enabled: true
+    app: taxi-app
+    image: 201685886146.dkr.ecr.eu-central-1.amazonaws.com/laravel-app:219
+    replicas: 3
+    minReplicas: 3
+    maxReplicas: 15
+    domain: admin.taxi.com.sa
+    storage:
+      enabled: true
+      size: 21Gi
+      storageClassName: efs-sc
+    images:
+      size: 21Gi
+      storageClassName: efs-sc
+    tripfiles:
+      size: 21Gi
+      storageClassName: efs-sc
+    limits:
+      cpu: "1800m"
+      memory: "3Gi"
+    requests:
+      cpu: "1500m"
+      memory: "2Gi"
