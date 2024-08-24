@@ -13,6 +13,6 @@ spec:
     name: {{ .app }}
   minReplicas: {{ .minReplicas }}
   maxReplicas: {{ .maxReplicas }}
-  targetCPUUtilizationPercentage: 70
+  targetCPUUtilizationPercentage: 50
 {{- end }}
 {{- end }}
