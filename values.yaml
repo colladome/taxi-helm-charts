@@ -5,7 +5,7 @@ apps:
     image: 201685886146.dkr.ecr.eu-central-1.amazonaws.com/laravel-app:TAG
     replicas: 3
     minReplicas: 3
-    maxReplicas: 15
+    maxReplicas: 150
     domain: admin.taxi.com.sa
     storage:
       enabled: true
