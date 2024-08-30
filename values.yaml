@@ -19,7 +19,7 @@ apps:
       storageClassName: efs-sc
     limits:
       cpu: "1800m"
-      memory: "13Gi"
+      memory: "10Gi"
     requests:
       cpu: "1300m"
       memory: "3Gi"
