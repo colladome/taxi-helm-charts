@@ -32,6 +32,9 @@ spec:
           - sh
           - -c
           - |
+            php artisan config:clear
+            php artisan cache:clear
+            php artisan view:clear
             ##mkdir -p /var/www/html/storage/framework/cache/data \
             ##&& mkdir -p /var/www/html/storage/framework/sessions \
             ##&& mkdir -p /var/www/html/storage/framework/views \
