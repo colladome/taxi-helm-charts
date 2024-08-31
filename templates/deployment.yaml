@@ -43,8 +43,8 @@ spec:
             ## && chmod -R 775 /var/www/html/public/trip_file \
             ##&& touch /var/www/html/storage/installed && echo "Laravel Installer successfully INSTALLED on 2021/12/18 01:35:25pm" > /var/www/html/storage/installed
         securityContext:
-          runAsUser: ubuntu
-          runAsGroup: ubuntu
+          runAsUser: 1000
+          runAsGroup: 1000
         volumeMounts:
         - name: storage
           mountPath: /var/www/html/storage
