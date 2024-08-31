@@ -76,16 +76,16 @@ spec:
         {{- end }}
         livenessProbe:
           httpGet:
-            path: /healthz
+            path: /health.php
             port: 80
           initialDelaySeconds: 10
-          periodSeconds: 30
+          periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /healthz
+            path: /health.php
             port: 80
           initialDelaySeconds: 10
-          periodSeconds: 30
+          periodSeconds: 10
       restartPolicy: Always
       volumes:
       - name: storage
