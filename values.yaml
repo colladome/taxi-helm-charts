@@ -6,7 +6,7 @@ apps:
     replicas: 13
     minReplicas: 13
     maxReplicas: 150
-    domain: admin.taxi.com.sa
+    domain: dev.admin.taxi.com.sa
     storage:
       enabled: true
       size: 21Gi
